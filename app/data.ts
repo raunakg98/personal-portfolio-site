@@ -29,10 +29,10 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
-    name: 'Motion Primitives Pro',
+    name: 'My Serverless Summarizer',
     description:
-      'Advanced components and templates to craft beautiful websites.',
-    link: 'https://pro.motion-primitives.com/',
+      'Advanced text summarizer built on a serverless architecture.',
+    link: 'https://raunakg98.github.io/s3-summarizer/',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
     id: 'project1',
@@ -49,28 +49,36 @@ export const PROJECTS: Project[] = [
 
 export const WORK_EXPERIENCE: WorkExperience[] = [
   {
-    company: 'Reglazed Studio',
-    title: 'CEO',
+    company: 'Lucky Dog Animal Rescue',
+    title: 'Data Scientist',
     start: '2024',
     end: 'Present',
-    link: 'https://ibelick.com',
+    link: 'test',
     id: 'work1',
   },
   {
-    company: 'Freelance',
-    title: 'Design Engineer',
-    start: '2022',
-    end: '2024',
-    link: 'https://ibelick.com',
+    company: 'Civis Analytics',
+    title: 'Data Analytics Intern',
+    start: '2023',
+    end: '2023',
+    link: 'test',
     id: 'work2',
   },
   {
-    company: 'Freelance',
-    title: 'Front-end Developer',
-    start: '2017',
-    end: 'Present',
-    link: 'https://ibelick.com',
+    company: 'Genpact',
+    title: 'Data Scientist',
+    start: '2021',
+    end: '2022',
+    link: 'test',
     id: 'work3',
+  },
+  {
+    company: 'Solar Industries India Ltd.',
+    title: 'Backend Engineer',
+    start: '2020',
+    end: '2021',
+    link: 'test',
+    id: 'work4',
   },
 ]
 
@@ -106,20 +114,20 @@ export const BLOG_POSTS: BlogPost[] = [
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     label: 'Github',
-    link: 'https://github.com/ibelick',
+    link: 'https://github.com/raunakg98',
   },
   {
     label: 'Twitter',
-    link: 'https://twitter.com/ibelick',
+    link: 'https://twitter.com/raunak.ghawghawe',
   },
   {
     label: 'LinkedIn',
-    link: 'https://www.linkedin.com/in/ibelick',
+    link: 'https://www.linkedin.com/in/raunak-gh/',
   },
   {
     label: 'Instagram',
-    link: 'https://www.instagram.com/ibelick',
+    link: 'https://www.instagram.com/i_ronik',
   },
 ]
 
-export const EMAIL = 'your@email.com'
+export const EMAIL = 'raunakghawghawe07@email.com'

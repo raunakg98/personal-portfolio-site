@@ -11,17 +11,73 @@ export const viewport: Viewport = {
   themeColor: '#ffffff',
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://nim-fawn.vercel.app/'),
-  alternates: {
-    canonical: '/'
-  },
+// export const metadata: Metadata = {
+//   metadataBase: new URL('https://nim-fawn.vercel.app/'),
+//   alternates: {
+//     canonical: '/'
+//   },
+//   title: {
+//     default: 'RAUNAK GHAWGHAWE  Data Scientist',
+//     template: '%s | Nim'
+//   },
+//   description:  'Nim is a free and open-source personal website template built with Next.js 15, React 19 and Motion-Primitives.',
+// };
+// app/layout.tsx   (keep the rest of the file exactly as it is)
+
+export const metadata = {
+  /* ---------- BASIC ---------- */
+  metadataBase: new URL('https://nim-fawn.vercel.app'),   // change later to your own domain
+  alternates: { canonical: '/' },
+
+  /* ---------- TITLE & DESCRIPTION ---------- */
   title: {
-    default: 'Nim - Personal website template',
-    template: '%s | Nim'
+    default: 'Raunak Ghawghawe – Data Scientist & Analytics Engineer',
+    template: '%s | Raunak Ghawghawe',
   },
-  description:  'Nim is a free and open-source personal website template built with Next.js 15, React 19 and Motion-Primitives.',
-};
+  description:
+    'Maryland‑based data scientist specialising in nonprofit and animal‑welfare analytics. Python · SQL · AWS · Tableau.',
+
+  /* ---------- SEO KEYWORDS ---------- */
+  keywords: [
+    'data scientist',
+    'analytics engineer',
+    'nonprofit analytics',
+    'animal welfare',
+    'python',
+    'sql',
+    'tableau',
+    'aws',
+    'machine learning',
+    'donor analytics',
+    'data pipelines',
+    'maryland',
+    'washington dc',
+  ],
+
+  /* ---------- AUTHOR ---------- */
+  authors: [{ name: 'Raunak Ghawghawe', url: 'https://nim-fawn.vercel.app' }],
+
+  /* ---------- OPEN GRAPH (for link previews) ---------- */
+  openGraph: {
+    title: 'Raunak Ghawghawe – Data Scientist',
+    description:
+      'Maryland‑based data scientist turning animal‑welfare data into action. Explore projects, blog posts and contact details.',
+    url: 'https://nim-fawn.vercel.app',
+    siteName: 'Raunak Ghawghawe',
+    images: [
+      {
+        url: '/og.jpg',   // serves https://…/og-cover.png
+        width: 800,
+        height: 800,
+        alt: 'Raunak Ghawghawe profile image',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+} satisfies import('next').Metadata
+
+
 
 const geist = Geist({
   variable: '--font-geist',
