@@ -66,7 +66,7 @@ export const metadata = {
     siteName: 'Raunak Ghawghawe',
     images: [
       {
-        url: '/og.jpg',   // serves https://…/og-cover.png
+        url: '/og.jpeg',   // serves https://…/og-cover.png
         width: 800,
         height: 800,
         alt: 'Raunak Ghawghawe profile image',
