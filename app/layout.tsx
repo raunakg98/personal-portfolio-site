@@ -35,7 +35,7 @@ export const metadata = {
     template: '%s | Raunak Ghawghawe',
   },
   description:
-    'Maryland‑based data scientist specialising in nonprofit and animal‑welfare analytics. Python · SQL · AWS · Tableau.',
+    'DC-based data scientist specialising in driving revenue by turning your data into actionable insights. Python | SQL | AWS | Tableau.',
 
   /* ---------- SEO KEYWORDS ---------- */
   keywords: [
@@ -61,7 +61,7 @@ export const metadata = {
   openGraph: {
     title: 'Raunak Ghawghawe – Data Scientist',
     description:
-      'Maryland‑based data scientist turning animal‑welfare data into action. Explore projects, blog posts and contact details.',
+      'DC-based data scientist specialising in driving revenue by turning your data into actionable insights. Python | SQL | AWS | Tableau.',
     url: 'https://personal-portfolio-site-kxxo.vercel.app/',
     siteName: 'Raunak Ghawghawe',
     images: [

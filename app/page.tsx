@@ -137,7 +137,7 @@ export default function Personal() {
       >
         <div className="flex-1">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Focused on driving revenue by uncovering answers through advanced statistical analysis and concise visuals.
+            I solve business problems by turning your data into revenue-driving insights using advanced analytics.
             Bridging the gap between raw numbers and real impact.
           </p>
         </div>
