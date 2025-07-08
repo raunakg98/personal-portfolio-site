@@ -34,7 +34,7 @@ export const PROJECTS: Project[] = [
       'Advanced text summarizer built on a serverless architecture.',
     link: 'https://raunakg98.github.io/s3-summarizer/',
     video:
-      'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
+      '/summarizer.gif',
     id: 'project1',
   },
   {
@@ -84,9 +84,9 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    title: 'Exploring the Intersection of Design, AI, and Design Engineering',
-    description: 'How AI is changing the way we design',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
+    title: 'How I Built a $0 Text‑Summarizer That Saves My Sanity',
+    description: 'An AI powered no-cost app that chews through raw text so I don’t have to',
+    link: 'https://medium.com/@raunakghawghawe07/how-i-built-a-0-text-summarizer-that-saves-my-sanity-331cd4e96081',
     uid: 'blog-1',
   },
   {
