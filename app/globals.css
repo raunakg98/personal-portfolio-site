@@ -30,3 +30,13 @@
   --sh-property: #73daca;
   --sh-entity: #e0af68;
 }
+
+/* globals.css (bottom of the file) */
+@keyframes fadeInQuick {
+  from { opacity: 0; transform: scale(.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeInQuick .4s ease-out both;
+}
