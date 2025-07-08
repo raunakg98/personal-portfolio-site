@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 
 export const metadata = {
   /* ---------- BASIC ---------- */
-  metadataBase: new URL('https://nim-fawn.vercel.app'),   // change later to your own domain
+  metadataBase: new URL('https://personal-portfolio-site-kxxo.vercel.app/'),   // change later to your own domain
   alternates: { canonical: '/' },
 
   /* ---------- TITLE & DESCRIPTION ---------- */
@@ -55,14 +55,14 @@ export const metadata = {
   ],
 
   /* ---------- AUTHOR ---------- */
-  authors: [{ name: 'Raunak Ghawghawe', url: 'https://nim-fawn.vercel.app' }],
+  authors: [{ name: 'Raunak Ghawghawe', url: 'https://personal-portfolio-site-kxxo.vercel.app/' }],
 
   /* ---------- OPEN GRAPH (for link previews) ---------- */
   openGraph: {
     title: 'Raunak Ghawghawe – Data Scientist',
     description:
       'Maryland‑based data scientist turning animal‑welfare data into action. Explore projects, blog posts and contact details.',
-    url: 'https://nim-fawn.vercel.app',
+    url: 'https://personal-portfolio-site-kxxo.vercel.app/',
     siteName: 'Raunak Ghawghawe',
     images: [
       {
