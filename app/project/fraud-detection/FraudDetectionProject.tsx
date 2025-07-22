@@ -550,7 +550,7 @@ const DataExplorerSection = () => {
     };
 
     const generateSampleTransaction = () => {
-      const isFraud = Math.random() < 0.05; // Realistic 0.5% fraud rate
+      const isFraud = Math.random() < 0.005; // Realistic 0.5% fraud rate
       const merchantKeys = Object.keys(MERCHANT_CATEGORIES);
       const locationKeys = Object.keys(LOCATION_CATEGORIES);
       
