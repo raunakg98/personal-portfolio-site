@@ -113,13 +113,13 @@ const FraudDetectionProject = () => {
     const [threshold, setThreshold] = useState(0.5);
 
     // Merchant risk categories
-    const MERCHANT_CATEGORIES = {
+    const MERCHANT_CATEGORIES:Record<string, number> = {
       'Grocery Store': 0.02, 'Gas Station': 0.04, 'Restaurant': 0.05, 'Pharmacy': 0.03,
       'Online Retail': 0.18, 'Electronics Store': 0.22, 'Hotel': 0.25, 'Jewelry Store': 0.35,
       'Online Gaming': 0.75, 'Gambling Casino': 0.85, 'Unknown Merchant': 0.88, 'Foreign ATM': 0.72
     };
 
-    const LOCATION_CATEGORIES = {
+    const LOCATION_CATEGORIES:Record<string, number> = {
       'Beverly Hills CA': 0.02, 'Manhattan NY': 0.05, 'Suburban Mall': 0.04, 'Airport Terminal': 0.08,
       'Las Vegas NV': 0.22, 'Miami FL': 0.16, 'Downtown Detroit': 0.18, 'High Crime Area': 0.35,
       'Remote ATM': 0.28, 'Unknown Country': 0.88, 'High Risk Region': 0.85
@@ -532,7 +532,7 @@ const DataExplorerSection = () => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [stats, setStats] = useState({});
 
-    const MERCHANT_CATEGORIES = {
+    const MERCHANT_CATEGORIES:Record<string, number> = {
       'Grocery Store': 0.02, 'Pharmacy': 0.03, 'Gas Station': 0.04, 'Fast Food': 0.05,
       'Department Store': 0.06, 'Coffee Shop': 0.04, 'Bank ATM': 0.08, 'Utility Payment': 0.01,
       'Online Retail': 0.18, 'Electronics Store': 0.22, 'Clothing Store': 0.16, 'Restaurant': 0.12,
@@ -541,7 +541,7 @@ const DataExplorerSection = () => {
       'Online Gaming': 0.75, 'Gambling Casino': 0.85, 'Unknown Merchant': 0.88, 'Foreign ATM': 0.72
     };
 
-    const LOCATION_CATEGORIES = {
+    const LOCATION_CATEGORIES:Record<string, number> = {
       'Beverly Hills CA': 0.02, 'Manhattan NY': 0.05, 'Bellevue WA': 0.03, 'Suburban Mall': 0.04,
       'Airport Terminal': 0.08, 'Corporate District': 0.03, 'Las Vegas NV': 0.22, 'Miami FL': 0.16,
       'Downtown Detroit': 0.18, 'Border Town TX': 0.24, 'Tourist Area': 0.14, 'College Campus': 0.12,
