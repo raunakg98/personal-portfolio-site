@@ -1,0 +1,16 @@
+.fraud-detection-layout {
+  width: 100vw !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+}
+
+/* Override any parent container constraints */
+.fraud-detection-layout * {
+  max-width: none !important;
+}

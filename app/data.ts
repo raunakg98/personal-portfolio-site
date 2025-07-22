@@ -37,6 +37,15 @@ export const PROJECTS: Project[] = [
       '/summarizer.mp4',
     id: 'project1',
   },
+  {
+    name: 'Credit Card Fraud Detection',
+    description:
+      'Advanced text summarizer built on a serverless architecture.',
+    link: '/project/fraud-detection/',
+    video:
+      '/summarizer.mp4',
+    id: 'project2',
+  }
   // {
   //   name: 'Motion Primitives',
   //   description: 'UI kit to make beautiful, animated interfaces.',
