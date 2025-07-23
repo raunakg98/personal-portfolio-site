@@ -4,7 +4,7 @@ import './fraud-detection.css' // We'll create this
 export const metadata: Metadata = {
   title: 'Fraud Detection System | Raunak Ghawghawe',
   description: 'Real-time credit card fraud detection system using Machine Learning and explainable AI',
-  keywords: 'machine learning, fraud detection, navy federal, ensemble methods, explainable AI'
+  keywords: 'machine learning, fraud detection, credit, ensemble methods, explainable AI'
 }
 
 

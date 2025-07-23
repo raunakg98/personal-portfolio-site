@@ -40,10 +40,10 @@ export const PROJECTS: Project[] = [
   {
     name: 'Credit Card Fraud Detection',
     description:
-      'Advanced text summarizer built on a serverless architecture.',
+      'Fraud Detection using Machine Learning',
     link: '/project/fraud-detection/',
     video:
-      '/summarizer.mp4',
+      '/fraud_detection.mp4',
     id: 'project2',
   }
   // {
