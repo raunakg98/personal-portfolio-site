@@ -1,8 +1,9 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Shield, Brain, Database, BarChart3, Play, Pause, Settings, AlertTriangle, Eye, Info, TrendingUp, ArrowLeft, RefreshCw, Download } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-// Type definitions for TypeScript safety
+// Type definitions
 interface MerchantCategories {
   [key: string]: number;
 }
@@ -11,36 +12,47 @@ interface LocationCategories {
   [key: string]: number;
 }
 
-interface TransactionFeatures {
-  amount_z_score: number;
-  merchant_risk: number;
-  location_risk: number;
-  time_risk: number;
-  velocity_risk: number;
-  amount_merchant_interaction: number;
-}
-
 interface Transaction {
   id: string;
   timestamp: string;
   amount: number;
   merchant: string;
   location: string;
-  card_type?: string;
   isFraud: boolean;
   merchant_risk: number;
   location_risk: number;
-  features?: TransactionFeatures;
+}
+
+interface TransactionWithDetection extends Transaction {
+  score: number;
+  prediction: string;
+  confidence: number;
+  reasons: string[];
+  features: any;
+  model_breakdown: {
+    logistic_score: number;
+    random_forest_score: number;
+    ensemble_score: number;
+  };
+}
+
+interface Stats {
+  total: number;
+  fraudulent: number;
+  detected: number;
+  falsePositives: number;
+  accuracy: number;
 }
 
 const FraudDetectionProject = () => {
   const [activeSection, setActiveSection] = useState('simulator');
+  const router = useRouter();
 
-  // Back to Portfolio Component (minimal, clean)
+  // Back to Portfolio Component (fixed)
   const BackToPortfolio = () => (
     <div className="p-6 pb-0">
       <button 
-        onClick={() => window.history.back()}
+        onClick={() => router.back()}
         className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -49,7 +61,7 @@ const FraudDetectionProject = () => {
     </div>
   );
 
-  // Clean Hero Section (no large header)
+  // Clean Hero Section
   const HeroSection = () => (
     <div className="px-6 pt-4 pb-8">
       <div className="text-center">
@@ -60,10 +72,9 @@ const FraudDetectionProject = () => {
           </h1>
         </div>
         <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">
-          Advanced ML system using ensemble methods and explainable AI.
+          Advanced ML system using ensemble methods and explainable AI for Navy Federal Credit Union.
         </p>
         
-        {/* Compact Educational Disclaimer */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 max-w-4xl mx-auto">
           <div className="flex items-start">
             <AlertTriangle className="w-5 h-5 text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
@@ -76,7 +87,6 @@ const FraudDetectionProject = () => {
           </div>
         </div>
 
-        {/* Compact Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <div className="bg-white p-4 rounded-lg shadow-sm border">
             <Brain className="w-6 h-6 text-green-600 mb-2" />
@@ -98,7 +108,7 @@ const FraudDetectionProject = () => {
     </div>
   );
 
-  // Navigation Component (simplified)
+  // Navigation Component
   const ProjectNavigation = () => {
     const sections = [
       { id: 'simulator', name: 'Live Simulator', icon: Shield },
@@ -131,10 +141,10 @@ const FraudDetectionProject = () => {
 
   // Live Fraud Simulator Section
   const LiveSimulatorSection = () => {
-    const [transactions, setTransactions] = useState<any[]>([]);
+    const [transactions, setTransactions] = useState<TransactionWithDetection[]>([]);
     const [isRunning, setIsRunning] = useState(false);
-    const [selectedTransaction, setSelectedTransaction] = useState<any>(null);
-    const [stats, setStats] = useState({
+    const [selectedTransaction, setSelectedTransaction] = useState<TransactionWithDetection | null>(null);
+    const [stats, setStats] = useState<Stats>({
       total: 0,
       fraudulent: 0,
       detected: 0,
@@ -143,7 +153,7 @@ const FraudDetectionProject = () => {
     });
     const [threshold, setThreshold] = useState(0.5);
 
-    // Merchant risk categories with proper typing
+    // Merchant risk categories (with proper typing)
     const MERCHANT_CATEGORIES: MerchantCategories = {
       'Grocery Store': 0.02, 'Gas Station': 0.04, 'Restaurant': 0.05, 'Pharmacy': 0.03,
       'Online Retail': 0.18, 'Electronics Store': 0.22, 'Hotel': 0.25, 'Jewelry Store': 0.35,
@@ -156,9 +166,9 @@ const FraudDetectionProject = () => {
       'Remote ATM': 0.28, 'Unknown Country': 0.88, 'High Risk Region': 0.85
     };
 
-    // Generate realistic transaction with fraud bias
-    const generateTransaction = (): any => {
-      const isFraud = Math.random() < 0.05;
+    // Generate realistic transaction with fraud bias (FIXED)
+    const generateTransaction = (): Transaction => {
+      const isFraud = Math.random() < 0.1;
       const merchantKeys = Object.keys(MERCHANT_CATEGORIES);
       const locationKeys = Object.keys(LOCATION_CATEGORIES);
       
@@ -191,7 +201,7 @@ const FraudDetectionProject = () => {
     };
 
     // Enhanced ML fraud detection
-    const detectFraud = (transaction: any) => {
+    const detectFraud = (transaction: Transaction) => {
       const hour = new Date().getHours();
       
       const features = {
@@ -208,7 +218,11 @@ const FraudDetectionProject = () => {
         time_risk: 0.445, velocity_risk: 2.134, amount_merchant_interaction: 0.778
       };
 
-      const logit = Object.keys(weights).reduce((sum, key) => sum + (weights as any)[key] * (features as any)[key], 0);
+      const logit = Object.keys(weights).reduce((sum, key) => {
+        const featureValue = features[key as keyof typeof features];
+        const weightValue = weights[key as keyof typeof weights];
+        return sum + weightValue * featureValue;
+      }, 0);
       const logisticScore = 1 / (1 + Math.exp(-logit));
 
       let rfScore = 0;
@@ -221,7 +235,7 @@ const FraudDetectionProject = () => {
       const ensembleScore = (logisticScore * 0.6) + (rfScore * 0.4);
       const finalScore = Math.max(0, Math.min(1, ensembleScore + (Math.random() * 0.1 - 0.05)));
 
-      const reasons = [];
+      const reasons: string[] = [];
       if (features.merchant_risk > 0.3) reasons.push(`High-risk merchant: ${transaction.merchant}`);
       if (features.location_risk > 0.2) reasons.push(`Suspicious location: ${transaction.location}`);
       if (Math.abs(features.amount_z_score) > 1) reasons.push(`Unusual amount: $${transaction.amount.toFixed(2)}`);
@@ -248,15 +262,17 @@ const FraudDetectionProject = () => {
       const interval = setInterval(() => {
         const newTransaction = generateTransaction();
         const detection = detectFraud(newTransaction);
-        const transactionWithDetection = { ...newTransaction, ...detection };
+        const transactionWithDetection: TransactionWithDetection = { ...newTransaction, ...detection };
         setTransactions(prev => [transactionWithDetection, ...prev.slice(0, 19)]);
 
+        // FIXED: Ensure all properties are included
         setStats(prev => {
-          const newStats = {
+          const newStats: Stats = {
             total: prev.total + 1,
             fraudulent: prev.fraudulent + (newTransaction.isFraud ? 1 : 0),
             detected: prev.detected + (detection.prediction === 'FRAUD' && newTransaction.isFraud ? 1 : 0),
-            falsePositives: prev.falsePositives + (detection.prediction === 'FRAUD' && !newTransaction.isFraud ? 1 : 0)
+            falsePositives: prev.falsePositives + (detection.prediction === 'FRAUD' && !newTransaction.isFraud ? 1 : 0),
+            accuracy: 0 // Will be calculated below
           };
           newStats.accuracy = newStats.total > 0 ? 
             ((newStats.detected + (newStats.total - newStats.fraudulent - newStats.falsePositives)) / newStats.total * 100) : 0;
@@ -292,37 +308,26 @@ const FraudDetectionProject = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <div className="relative group">
-                <button
-                  onClick={toggleSimulation}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isRunning 
-                      ? 'bg-red-600 text-white hover:bg-red-700' 
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
-                >
-                  {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  {isRunning ? 'Stop Stream' : 'Start Stream'}
-                </button>
-                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {isRunning ? 'Stop generating new transactions' : 'Begin real-time transaction simulation'}
-                </div>
-              </div>
-              <div className="relative group">
-                <button
-                  onClick={resetStats}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  Reset
-                </button>
-                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Clear all transactions and reset statistics
-                </div>
-              </div>
+              <button
+                onClick={toggleSimulation}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  isRunning 
+                    ? 'bg-red-600 text-white hover:bg-red-700' 
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+              >
+                {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                {isRunning ? 'Stop Stream' : 'Start Stream'}
+              </button>
+              <button
+                onClick={resetStats}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Reset
+              </button>
             </div>
           </div>
 
-          {/* Threshold Control */}
           <div className="flex items-center gap-2 flex-wrap">
             <Settings className="w-5 h-5 text-gray-600" />
             <input
@@ -476,7 +481,7 @@ const FraudDetectionProject = () => {
                         <div>
                           <p className="text-xs font-medium text-gray-700 mb-2">Risk Factors</p>
                           <ul className="space-y-1">
-                            {selectedTransaction.reasons.map((reason: string, index: number) => (
+                            {selectedTransaction.reasons.map((reason, index) => (
                               <li key={index} className="text-xs text-red-600 flex items-center gap-2">
                                 <AlertTriangle className="w-3 h-3" />
                                 {reason}
@@ -558,6 +563,7 @@ const FraudDetectionProject = () => {
     );
   };
 
+  // Data Explorer Section (COMPLETE)
   const DataExplorerSection = () => {
     const [sampleData, setSampleData] = useState<any[]>([]);
     const [showFeatures, setShowFeatures] = useState(false);
@@ -936,9 +942,9 @@ const FraudDetectionProject = () => {
             </div>
           </div>
 
-          {/* Why This Works  */}
+          {/* Why This Works for Navy Federal */}
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-            <h4 className="font-bold text-blue-900 mb-3">Why This Data Structure Works</h4>
+            <h4 className="font-bold text-blue-900 mb-3">Why This Data Structure Works for Navy Federal</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
               <div>
                 <h5 className="font-medium mb-2">Business Relevance</h5>
@@ -965,7 +971,7 @@ const FraudDetectionProject = () => {
     );
   };
 
-  // Placeholder sections
+  // Placeholder sections for ML Training and About
   const PlaceholderSection = ({ title, description }: { title: string; description: string }) => (
     <div className="bg-white mx-6 rounded-b-lg shadow-sm p-12 text-center">
       <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
