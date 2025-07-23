@@ -72,7 +72,7 @@ const FraudDetectionProject = () => {
           </h1>
         </div>
         <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">
-          Advanced ML system using ensemble methods and explainable AI for Navy Federal Credit Union.
+          Advanced ML system using ensemble methods and explainable AI.
         </p>
         
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 max-w-4xl mx-auto">
@@ -552,7 +552,7 @@ const FraudDetectionProject = () => {
                   <li>• $10M+ potential savings</li>
                   <li>• Improved member experience</li>
                   <li>• Regulatory compliance</li>
-                  <li>• Military-specific adaptations</li>
+                  <li>• Reduced false positives</li>
                   <li>• Scalable architecture</li>
                 </ul>
               </div>
@@ -942,17 +942,17 @@ const FraudDetectionProject = () => {
             </div>
           </div>
 
-          {/* Why This Works for Navy Federal */}
+          {/* Why This Works*/}
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-            <h4 className="font-bold text-blue-900 mb-3">Why This Data Structure Works for Navy Federal</h4>
+            <h4 className="font-bold text-blue-900 mb-3">Why This Data Structure Works</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
               <div>
                 <h5 className="font-medium mb-2">Business Relevance</h5>
                 <ul className="space-y-1 text-xs">
-                  <li>• Military-specific spending patterns can be integrated</li>
+                  <li>• Specific spending patterns can be integrated</li>
                   <li>• Deployment-related location changes</li>
                   <li>• PCS move transaction spikes</li>
-                  <li>• Military pay schedule correlations</li>
+                  <li>• Pay schedule correlations</li>
                 </ul>
               </div>
               <div>
