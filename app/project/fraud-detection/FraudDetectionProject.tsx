@@ -1,6 +1,37 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Shield, Brain, Database, BarChart3, Play, Pause, Settings, AlertTriangle, Eye, Info, TrendingUp, ArrowLeft , RefreshCw, Download} from 'lucide-react';
+import { Shield, Brain, Database, BarChart3, Play, Pause, Settings, AlertTriangle, Eye, Info, TrendingUp, ArrowLeft, RefreshCw, Download } from 'lucide-react';
+
+// Type definitions for TypeScript safety
+interface MerchantCategories {
+  [key: string]: number;
+}
+
+interface LocationCategories {
+  [key: string]: number;
+}
+
+interface TransactionFeatures {
+  amount_z_score: number;
+  merchant_risk: number;
+  location_risk: number;
+  time_risk: number;
+  velocity_risk: number;
+  amount_merchant_interaction: number;
+}
+
+interface Transaction {
+  id: string;
+  timestamp: string;
+  amount: number;
+  merchant: string;
+  location: string;
+  card_type?: string;
+  isFraud: boolean;
+  merchant_risk: number;
+  location_risk: number;
+  features?: TransactionFeatures;
+}
 
 const FraudDetectionProject = () => {
   const [activeSection, setActiveSection] = useState('simulator');
@@ -100,9 +131,9 @@ const FraudDetectionProject = () => {
 
   // Live Fraud Simulator Section
   const LiveSimulatorSection = () => {
-    const [transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState<any[]>([]);
     const [isRunning, setIsRunning] = useState(false);
-    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [selectedTransaction, setSelectedTransaction] = useState<any>(null);
     const [stats, setStats] = useState({
       total: 0,
       fraudulent: 0,
@@ -112,38 +143,38 @@ const FraudDetectionProject = () => {
     });
     const [threshold, setThreshold] = useState(0.5);
 
-    // Merchant risk categories
-    const MERCHANT_CATEGORIES = {
+    // Merchant risk categories with proper typing
+    const MERCHANT_CATEGORIES: MerchantCategories = {
       'Grocery Store': 0.02, 'Gas Station': 0.04, 'Restaurant': 0.05, 'Pharmacy': 0.03,
       'Online Retail': 0.18, 'Electronics Store': 0.22, 'Hotel': 0.25, 'Jewelry Store': 0.35,
       'Online Gaming': 0.75, 'Gambling Casino': 0.85, 'Unknown Merchant': 0.88, 'Foreign ATM': 0.72
     };
 
-    const LOCATION_CATEGORIES = {
+    const LOCATION_CATEGORIES: LocationCategories = {
       'Beverly Hills CA': 0.02, 'Manhattan NY': 0.05, 'Suburban Mall': 0.04, 'Airport Terminal': 0.08,
       'Las Vegas NV': 0.22, 'Miami FL': 0.16, 'Downtown Detroit': 0.18, 'High Crime Area': 0.35,
       'Remote ATM': 0.28, 'Unknown Country': 0.88, 'High Risk Region': 0.85
     };
 
     // Generate realistic transaction with fraud bias
-    const generateTransaction = () => {
+    const generateTransaction = (): any => {
       const isFraud = Math.random() < 0.05;
       const merchantKeys = Object.keys(MERCHANT_CATEGORIES);
       const locationKeys = Object.keys(LOCATION_CATEGORIES);
       
-      let merchant, location, amount;
+      let merchant: string, location: string, amount: number;
       
       if (isFraud) {
-        const highRiskMerchants = merchantKeys.filter(m => MERCHANT_CATEGORIES[m] > 0.4);
-        const highRiskLocations = locationKeys.filter(l => LOCATION_CATEGORIES[l] > 0.3);
-        merchant = highRiskMerchants[Math.floor(Math.random() * highRiskMerchants.length)];
-        location = highRiskLocations[Math.floor(Math.random() * highRiskLocations.length)];
+        const highRiskMerchants = merchantKeys.filter(m => (MERCHANT_CATEGORIES[m] || 0) > 0.4);
+        const highRiskLocations = locationKeys.filter(l => (LOCATION_CATEGORIES[l] || 0) > 0.3);
+        merchant = highRiskMerchants[Math.floor(Math.random() * highRiskMerchants.length)] || 'Unknown Merchant';
+        location = highRiskLocations[Math.floor(Math.random() * highRiskLocations.length)] || 'Unknown Country';
         amount = Math.random() > 0.5 ? Math.random() * 10 + 1 : Math.random() * 4000 + 1000;
       } else {
-        const lowRiskMerchants = merchantKeys.filter(m => MERCHANT_CATEGORIES[m] < 0.3);
-        const safeLocations = locationKeys.filter(l => LOCATION_CATEGORIES[l] < 0.2);
-        merchant = lowRiskMerchants[Math.floor(Math.random() * lowRiskMerchants.length)];
-        location = safeLocations[Math.floor(Math.random() * safeLocations.length)];
+        const lowRiskMerchants = merchantKeys.filter(m => (MERCHANT_CATEGORIES[m] || 0) < 0.3);
+        const safeLocations = locationKeys.filter(l => (LOCATION_CATEGORIES[l] || 0) < 0.2);
+        merchant = lowRiskMerchants[Math.floor(Math.random() * lowRiskMerchants.length)] || 'Grocery Store';
+        location = safeLocations[Math.floor(Math.random() * safeLocations.length)] || 'Suburban Mall';
         amount = Math.random() * 300 + 20;
       }
 
@@ -154,13 +185,13 @@ const FraudDetectionProject = () => {
         merchant: merchant,
         location: location,
         isFraud: isFraud,
-        merchant_risk: MERCHANT_CATEGORIES[merchant],
-        location_risk: LOCATION_CATEGORIES[location]
+        merchant_risk: MERCHANT_CATEGORIES[merchant] || 0.5,
+        location_risk: LOCATION_CATEGORIES[location] || 0.5
       };
     };
 
     // Enhanced ML fraud detection
-    const detectFraud = (transaction) => {
+    const detectFraud = (transaction: any) => {
       const hour = new Date().getHours();
       
       const features = {
@@ -177,7 +208,7 @@ const FraudDetectionProject = () => {
         time_risk: 0.445, velocity_risk: 2.134, amount_merchant_interaction: 0.778
       };
 
-      const logit = Object.keys(weights).reduce((sum, key) => sum + weights[key] * features[key], 0);
+      const logit = Object.keys(weights).reduce((sum, key) => sum + (weights as any)[key] * (features as any)[key], 0);
       const logisticScore = 1 / (1 + Math.exp(-logit));
 
       let rfScore = 0;
@@ -243,7 +274,7 @@ const FraudDetectionProject = () => {
       setSelectedTransaction(null);
     };
 
-    const getRiskColor = (score) => {
+    const getRiskColor = (score: number) => {
       if (score > 0.7) return 'text-red-600 bg-red-50';
       if (score > 0.4) return 'text-yellow-600 bg-yellow-50';
       return 'text-green-600 bg-green-50';
@@ -291,7 +322,7 @@ const FraudDetectionProject = () => {
             </div>
           </div>
 
-          {/* Threshold Control - Moved closer to gear icon */}
+          {/* Threshold Control */}
           <div className="flex items-center gap-2 flex-wrap">
             <Settings className="w-5 h-5 text-gray-600" />
             <input
@@ -332,9 +363,9 @@ const FraudDetectionProject = () => {
             ))}
           </div>
 
-          {/* Transaction Stream and Analysis - FIXED HEIGHTS */}
+          {/* Transaction Stream and Analysis */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Transaction Stream - Fixed Height */}
+            {/* Transaction Stream */}
             <div className="lg:col-span-2 bg-gray-50 rounded-lg">
               <div className="p-4 border-b border-gray-200">
                 <h3 className="text-lg font-bold text-gray-900">Live Transaction Stream</h3>
@@ -347,7 +378,7 @@ const FraudDetectionProject = () => {
                     <p className="text-sm">Start the simulation to see live transactions</p>
                   </div>
                 ) : (
-                  <div className="space-y-2 h-96 overflow-y-auto"> {/* INCREASED HEIGHT */}
+                  <div className="space-y-2 h-96 overflow-y-auto">
                     {transactions.map((transaction) => (
                       <div
                         key={transaction.id}
@@ -385,14 +416,14 @@ const FraudDetectionProject = () => {
               </div>
             </div>
 
-            {/* Transaction Analysis Panel - Fixed Height */}
+            {/* Transaction Analysis Panel */}
             <div className="bg-gray-50 rounded-lg">
               <div className="p-4 border-b border-gray-200">
                 <h3 className="text-lg font-bold text-gray-900">Analysis</h3>
                 <p className="text-gray-600 text-sm">Click a transaction to analyze</p>
               </div>
               <div className="p-4">
-                <div className="h-96 overflow-y-auto"> {/* INCREASED HEIGHT */}
+                <div className="h-96 overflow-y-auto">
                   {selectedTransaction ? (
                     <div className="space-y-3">
                       <div>
@@ -445,7 +476,7 @@ const FraudDetectionProject = () => {
                         <div>
                           <p className="text-xs font-medium text-gray-700 mb-2">Risk Factors</p>
                           <ul className="space-y-1">
-                            {selectedTransaction.reasons.map((reason, index) => (
+                            {selectedTransaction.reasons.map((reason: string, index: number) => (
                               <li key={index} className="text-xs text-red-600 flex items-center gap-2">
                                 <AlertTriangle className="w-3 h-3" />
                                 {reason}
@@ -456,7 +487,7 @@ const FraudDetectionProject = () => {
                       )}
 
                       {selectedTransaction.model_breakdown && (
-                        <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200"> {/* FIXED: Better contrast */}
+                        <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
                           <p className="text-xs font-medium text-blue-900 mb-2">Model Breakdown</p>
                           <div className="space-y-1 text-xs">
                             <div className="flex justify-between text-blue-800">
@@ -526,13 +557,14 @@ const FraudDetectionProject = () => {
       </div>
     );
   };
-const DataExplorerSection = () => {
-    const [sampleData, setSampleData] = useState([]);
+
+  const DataExplorerSection = () => {
+    const [sampleData, setSampleData] = useState<any[]>([]);
     const [showFeatures, setShowFeatures] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [stats, setStats] = useState({});
+    const [stats, setStats] = useState<any>({});
 
-    const MERCHANT_CATEGORIES = {
+    const MERCHANT_CATEGORIES: MerchantCategories = {
       'Grocery Store': 0.02, 'Pharmacy': 0.03, 'Gas Station': 0.04, 'Fast Food': 0.05,
       'Department Store': 0.06, 'Coffee Shop': 0.04, 'Bank ATM': 0.08, 'Utility Payment': 0.01,
       'Online Retail': 0.18, 'Electronics Store': 0.22, 'Clothing Store': 0.16, 'Restaurant': 0.12,
@@ -541,7 +573,7 @@ const DataExplorerSection = () => {
       'Online Gaming': 0.75, 'Gambling Casino': 0.85, 'Unknown Merchant': 0.88, 'Foreign ATM': 0.72
     };
 
-    const LOCATION_CATEGORIES = {
+    const LOCATION_CATEGORIES: LocationCategories = {
       'Beverly Hills CA': 0.02, 'Manhattan NY': 0.05, 'Bellevue WA': 0.03, 'Suburban Mall': 0.04,
       'Airport Terminal': 0.08, 'Corporate District': 0.03, 'Las Vegas NV': 0.22, 'Miami FL': 0.16,
       'Downtown Detroit': 0.18, 'Border Town TX': 0.24, 'Tourist Area': 0.14, 'College Campus': 0.12,
@@ -554,32 +586,35 @@ const DataExplorerSection = () => {
       const merchantKeys = Object.keys(MERCHANT_CATEGORIES);
       const locationKeys = Object.keys(LOCATION_CATEGORIES);
       
-      let merchant, location, amount;
+      let merchant: string, location: string, amount: number;
       
       if (isFraud) {
-        const highRiskMerchants = merchantKeys.filter(m => MERCHANT_CATEGORIES[m] > 0.4);
-        const highRiskLocations = locationKeys.filter(l => LOCATION_CATEGORIES[l] > 0.3);
-        merchant = highRiskMerchants[Math.floor(Math.random() * highRiskMerchants.length)];
-        location = highRiskLocations[Math.floor(Math.random() * highRiskLocations.length)];
+        const highRiskMerchants = merchantKeys.filter(m => (MERCHANT_CATEGORIES[m] || 0) > 0.4);
+        const highRiskLocations = locationKeys.filter(l => (LOCATION_CATEGORIES[l] || 0) > 0.3);
+        merchant = highRiskMerchants[Math.floor(Math.random() * highRiskMerchants.length)] || 'Unknown Merchant';
+        location = highRiskLocations[Math.floor(Math.random() * highRiskLocations.length)] || 'Unknown Country';
         amount = Math.random() > 0.5 ? Math.random() * 10 + 1 : Math.random() * 4000 + 1000;
       } else {
-        const lowRiskMerchants = merchantKeys.filter(m => MERCHANT_CATEGORIES[m] < 0.3);
-        const safeLocations = locationKeys.filter(l => LOCATION_CATEGORIES[l] < 0.2);
-        merchant = lowRiskMerchants[Math.floor(Math.random() * lowRiskMerchants.length)];
-        location = safeLocations[Math.floor(Math.random() * safeLocations.length)];
+        const lowRiskMerchants = merchantKeys.filter(m => (MERCHANT_CATEGORIES[m] || 0) < 0.3);
+        const safeLocations = locationKeys.filter(l => (LOCATION_CATEGORIES[l] || 0) < 0.2);
+        merchant = lowRiskMerchants[Math.floor(Math.random() * lowRiskMerchants.length)] || 'Grocery Store';
+        location = safeLocations[Math.floor(Math.random() * safeLocations.length)] || 'Suburban Mall';
         amount = Math.random() * 300 + 20;
       }
 
       const timestamp = new Date();
       const hour = timestamp.getHours();
       
+      const merchantRisk = MERCHANT_CATEGORIES[merchant] || 0.5;
+      const locationRisk = LOCATION_CATEGORIES[location] || 0.5;
+      
       const features = {
         amount_z_score: Number(((amount - 150) / 200).toFixed(3)),
-        merchant_risk: MERCHANT_CATEGORIES[merchant],
-        location_risk: LOCATION_CATEGORIES[location],
+        merchant_risk: merchantRisk,
+        location_risk: locationRisk,
         time_risk: (hour >= 22 || hour <= 5) ? 0.7 : 0.1,
         velocity_risk: Number((Math.random() * 0.3).toFixed(3)),
-        amount_merchant_interaction: Number(((amount - 150) / 200 * MERCHANT_CATEGORIES[merchant]).toFixed(3))
+        amount_merchant_interaction: Number(((amount - 150) / 200 * merchantRisk).toFixed(3))
       };
 
       return {
@@ -930,9 +965,8 @@ const DataExplorerSection = () => {
     );
   };
 
-
   // Placeholder sections
-  const PlaceholderSection = ({ title, description }) => (
+  const PlaceholderSection = ({ title, description }: { title: string; description: string }) => (
     <div className="bg-white mx-6 rounded-b-lg shadow-sm p-12 text-center">
       <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
       <p className="text-gray-600 mb-6">{description}</p>
@@ -946,10 +980,7 @@ const DataExplorerSection = () => {
       case 'simulator':
         return <LiveSimulatorSection />;
       case 'data-explorer':
-        return <DataExplorerSection 
-          title="Data Explorer" 
-          description="Explore dataset structure, feature engineering, and data generation process" 
-        />;
+        return <DataExplorerSection />;
       case 'training':
         return <PlaceholderSection 
           title="ML Training Pipeline" 
